@@ -6,6 +6,7 @@ const express = require('express');
 const path = require('path');
 const apiKey = '30345c8bb3254064fa5aa95b2598b854';
 const baseUrl = 'api.openweathermap.org/data/2.5/weather?zip=';
+const fetch = require('node-fetch');
 
 // Start up an instance of app
 const app = express();
@@ -32,20 +33,45 @@ app.use(express.static('website'));
 
 // Setup Server
 
-app.get('/weather', function(req, res) {
-    let zip = req.query.zip;
-    let feelings = req.query.feelings;
-
-    projectData.push(zip);
-    projectData.push(feelings);
-
+app.get('/weather/:zip/:feelings', function(req, res) {
+    let zip = req.params.zip;
+    let feelings = req.params.feelings;
+    projectData.push({zip: zip, feelings: feelings});
     console.log(projectData);
-    res.send('Is it hot');
+    const weatherResult = callWeatherApi(zip);
+    console.log('Weather;', weatherResult);
+    // weatherresult returns a promise
+    // const temperature = weatherResult.main.temp;
+    res.send({
+        zip: zip,
+        // temperature: temperature,
+        feelings: feelings
+    });
 })
 
+function getWeatherURL(zip) {
+    return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;
+}
+
+const callWeatherApi = async (zip) => {
+    const url = getWeatherURL(zip);
+    const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    });
+    try {
+        const newData = await response.json();
+        console.log(newData);
+        return newData;
+    } catch(error) {
+        console.log('error:', error);
+    }
+}
 
 
-app.get('/', (req, res) => {req.push(projectData), console.log(testing)});
+
 
 const port = 8000;
 const server = app.listen(port, () => { console.log(`running on localhost: ${port}`)});
