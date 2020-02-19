@@ -37,17 +37,39 @@ app.get('/weather/:zip/:feelings', function(req, res) {
     let zip = req.params.zip;
     let feelings = req.params.feelings;
     projectData.push({zip: zip, feelings: feelings});
-    console.log(projectData);
-    const weatherResult = callWeatherApi(zip);
-    console.log('Weather;', weatherResult);
-    // weatherresult returns a promise
-    // const temperature = weatherResult.main.temp;
-    res.send({
-        zip: zip,
-        // temperature: temperature,
-        feelings: feelings
+    callWeatherApi(zip).then(function(temp){
+        console.log('temperature', temp.main.temp);
+        res.send({
+            zip: zip,
+            temperature: temp.main.temp,
+            feelings: feelings
+        }); 
+    }).catch(function(reason) {
+        console.log('error', reason);
     });
+
+
+    // const temperature = weatherResult.main.temp;
+    
 })
+const weatherPromise = async (url = '')=>{
+    const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    });
+    try {
+        const newData = await response.json();
+        console.log(key);
+        return key;
+    } catch(error) {
+        console.log('error:', error);
+    }
+}
+// .then(function(newData)) {
+
+// }
 
 function getWeatherURL(zip) {
     return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;

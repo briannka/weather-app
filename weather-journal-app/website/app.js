@@ -36,9 +36,7 @@ const postData = async (url = '')=>{
         console.log('error:', error);
     }
 }
-// const testData = '/weather/28329/testing'
-// postData(testData, {zip: 28329, feelings: 'this is how i feel'})
-// postData('/weather/zip=?/feelings=?', {zip: 67493, feelings: 'why isn\'t this working'})
+
 
 /* Function to GET Project Data */
 document.getElementById('generate').addEventListener('click', submission);
