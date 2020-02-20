@@ -26,12 +26,10 @@ const cors = require('cors');
 app.use(cors());
 
 // Initialize the main project folder
-
-
 app.use(express.static('website'));
 
 
-// Setup Server
+
 
 app.get('/weather/:zip/:feelings', function(req, res) {
     let zip = req.params.zip;
@@ -47,27 +45,7 @@ app.get('/weather/:zip/:feelings', function(req, res) {
     }).catch(function(reason) {
         console.log('error', reason);
     });
-
-
-    // const temperature = weatherResult.main.temp;
-    
 })
-const weatherPromise = async (url = '')=>{
-    const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    });
-    try {
-        const newData = await response.json();
-        console.log(key);
-        return key;
-    } catch(error) {
-        console.log('error:', error);
-    }
-}
-// .then(function(newData)) {
 
 // }
 
@@ -93,7 +71,7 @@ const callWeatherApi = async (zip) => {
 }
 
 
-
+// Setup Server
 
 const port = 8000;
 const server = app.listen(port, () => { console.log(`running on localhost: ${port}`)});
