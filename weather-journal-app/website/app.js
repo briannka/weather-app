@@ -23,7 +23,7 @@
 
 const postData = async (url = '')=>{
     const response = await fetch(url, {
-    method: 'GET',
+    method: 'POST',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -37,6 +37,19 @@ const postData = async (url = '')=>{
     }
 }
 
+// //update ui
+// const ui = function updateUI() {
+//     const request = await fetch('/addJournal')
+//     try {
+//         const finalData = await request.json();
+//         console.log(finalData);
+//         document.getElementById('temp').innerHTML = newData[0].temp;
+//         document.getElementById('content').innerHTML = newData[0].feelings;
+//     } catch(error) {
+//         console.log('error', error);
+//     } 
+// }
+
 
 /* Function to GET Project Data */
 document.getElementById('generate').addEventListener('click', submission);
@@ -47,5 +60,6 @@ const feelingsInput = document.getElementById('feelings');
 function submission() {
     const zipValue = zipInput.value;
     const feelingsValue = feelingsInput.value;
-    postData(`/weather/${zipValue}/${feelingsValue}`);
+    postData(`/weather/${zipValue}/${feelingsValue}`, {zip: zipValue, feelings: feelingsValue});
+    // updateUI();
 }

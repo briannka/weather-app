@@ -31,11 +31,12 @@ app.use(express.static('website'));
 
 
 
-app.get('/weather/:zip/:feelings', function(req, res) {
+app.post('/weather/:zip/:feelings', function(req, res) {
     let zip = req.params.zip;
     let feelings = req.params.feelings;
     projectData.push({zip: zip, feelings: feelings});
     callWeatherApi(zip).then(function(temp){
+        // if i remove the .then content since i don't need to return it, what so i put in the .then function content
         console.log('temperature', temp.main.temp);
         res.send({
             zip: zip,
@@ -47,7 +48,9 @@ app.get('/weather/:zip/:feelings', function(req, res) {
     });
 })
 
-// }
+// create post route
+app.get('/addJournal', addingJournalData);
+
 
 function getWeatherURL(zip) {
     return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;
@@ -70,8 +73,12 @@ const callWeatherApi = async (zip) => {
     }
 }
 
+function addingJournalData(req, res) {
+    // res.send(projectData);
+    console.log(projectData);
+}
 
-// Setup Server
+
 
 const port = 8000;
 const server = app.listen(port, () => { console.log(`running on localhost: ${port}`)});
