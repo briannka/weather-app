@@ -4,25 +4,25 @@
 
 /* Function to POST data */
 
-const postData = async (url = "", data) => {
-  const response = await fetch("http://localhost:8000/weather", {
-    method: "POST",
+const ajax = async (url = "", method = 'GET', data) => {
+  const config = {
+    method: method,
     credentials: "same-origin",
     headers: {
       "Content-Type": "application/json"
     },
-    // Body data type must match "Content-Type" header
-    body: JSON.stringify(data)
-  });
+  };
+  if (data) {
+    config.body = JSON.stringify(data);
+  }
+  const response = await fetch(url, config);
   try {
     const newData = await response.json();
-    console.log(newData);
     return newData;
   } catch (error) {
     console.log("error:", error);
   }
 };
-
 
 const updateUI = function updateUI(data) {
   document.getElementById('date').innerText = `Today's date is ${newDate}`;
@@ -43,10 +43,11 @@ async function submission() {
   const zipValue = zipInput.value;
   const feelingsValue = feelingsInput.value;
 
-  const result = await postData(`http://localhost:8000/weather`, {
+  await ajax(`/weather`, 'POST', {
     zip: zipValue,
     feelings: feelingsValue
   });
+  const result = ajax('/weather');
   updateUI(result);
 }
 
