@@ -1,65 +1,54 @@
 /* Global Variables */
 
-// Personal API Key for OpenWeatherMap API
+/* Function to GET Web API Data*/
 
-// Event listener to add function to existing HTML DOM element
+/* Function to POST data */
+
+const postData = async (url = "", data) => {
+  const response = await fetch("http://localhost:8000/weather", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    // Body data type must match "Content-Type" header
+    body: JSON.stringify(data)
+  });
+  try {
+    const newData = await response.json();
+    console.log(newData);
+    return newData;
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+
+const updateUI = function updateUI(data) {
+  document.getElementById('date').innerText = `Today's date is ${newDate}`;
+  document.getElementById('temp').innerText = `Temperature for zip code is ${data.temperature} fahrenheit`;
+  document.getElementById('content').innerText = `The user's feeling: ${data.feelings}`;
+};
 
 /* Function called by event listener */
 
-/* Function to GET Web API Data*/
+document.getElementById("generate").addEventListener("click", submission);
 
-// function loadDoc() {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//       if (this.readyState == 4 && this.status == 200) {
-//        document.getElementById("entryHolder").innerHTML = this.responseText;
-//       }
-//     };
-//     xhttp.open("GET", "/weather", true);
-//     xhttp.send();
-//   }
-// loadDoc();
-/* Function to POST data */
+const zipInput = document.getElementById("zip");
+const feelingsInput = document.getElementById("feelings");
 
-const postData = async (url = '')=>{
-    const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    });
-    try {
-        const newData = await response.json();
-        console.log(newData);
-        return newData;
-    } catch(error) {
-        console.log('error:', error);
-    }
+// Event listener to add function to existing HTML DOM element
+
+async function submission() {
+  const zipValue = zipInput.value;
+  const feelingsValue = feelingsInput.value;
+
+  const result = await postData(`http://localhost:8000/weather`, {
+    zip: zipValue,
+    feelings: feelingsValue
+  });
+  updateUI(result);
 }
 
-// //update ui
-// const ui = function updateUI() {
-//     const request = await fetch('/addJournal')
-//     try {
-//         const finalData = await request.json();
-//         console.log(finalData);
-//         document.getElementById('temp').innerHTML = newData[0].temp;
-//         document.getElementById('content').innerHTML = newData[0].feelings;
-//     } catch(error) {
-//         console.log('error', error);
-//     } 
-// }
-
-
-/* Function to GET Project Data */
-document.getElementById('generate').addEventListener('click', submission);
-
-const zipInput = document.getElementById('zip');
-const feelingsInput = document.getElementById('feelings');
-
-function submission() {
-    const zipValue = zipInput.value;
-    const feelingsValue = feelingsInput.value;
-    postData(`/weather/${zipValue}/${feelingsValue}`, {zip: zipValue, feelings: feelingsValue});
-    // updateUI();
-}
+let d = new Date();
+let newDate = (d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear();
