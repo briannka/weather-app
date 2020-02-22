@@ -4,31 +4,37 @@
 
 /* Function to POST data */
 
-const ajax = async (url = "", method = 'GET', data) => {
+const ajax = async (url = "", method = "GET", data) => {
   const config = {
-    method: method,
+    method,
     credentials: "same-origin",
     headers: {
       "Content-Type": "application/json"
-    },
+    }
   };
   if (data) {
     config.body = JSON.stringify(data);
   }
-  const response = await fetch(url, config);
   try {
+    const response = await fetch("http://www.localhost:8000/weather", config);
     const newData = await response.json();
+    console.log("Data coming from server:", newData);
     return newData;
   } catch (error) {
     console.log("error:", error);
   }
 };
 
-const updateUI = function updateUI(data) {
-  document.getElementById('date').innerText = `Today's date is ${newDate}`;
-  document.getElementById('temp').innerText = `Temperature for zip code is ${data.temperature} fahrenheit`;
-  document.getElementById('content').innerText = `The user's feeling: ${data.feelings}`;
-};
+function updateUI(data) {
+  console.log(data);
+  document.getElementById("date").innerText = `Today's date is ${newDate}`;
+  document.getElementById(
+    "temp"
+  ).innerText = `Temperature for zip code is ${data.temperature} fahrenheit`;
+  document.getElementById(
+    "content"
+  ).innerText = `The user's feeling: ${data.feelings}`;
+}
 
 /* Function called by event listener */
 
@@ -43,13 +49,12 @@ async function submission() {
   const zipValue = zipInput.value;
   const feelingsValue = feelingsInput.value;
 
-  await ajax(`/weather`, 'POST', {
+  const result = await ajax(`/weather`, "POST", {
     zip: zipValue,
     feelings: feelingsValue
   });
-  const result = ajax('/weather');
   updateUI(result);
 }
 
 let d = new Date();
-let newDate = (d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear();
+let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
