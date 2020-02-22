@@ -26,25 +26,34 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static("website"));
 
-app.post("/weather", function(req, res) {
+app.post("/weather", async function(req, res) {
   let zip = req.body.zip;
   let feelings = req.body.feelings;
   projectData.zip = zip;
   projectData.feelings = feelings;
-  callWeatherApi(zip)
-    .then(function(temp) {
-      res.send({
-        zip: zip,
-        temperature: temp.main.temp,
-        feelings: feelings
-      });
-    })
-    .catch(function(reason) {
-      console.log("error", reason);
+  try {
+    const result = await callWeatherApi(zip);
+    // console.log("Result in final function: ", result);
+    const { weather, main, name } = result;
+    const { description } = weather[0];
+    console.log({
+      name,
+      temperature: main.temp,
+      weather: description
     });
+
+    res.send({
+      name,
+      temperature: main.temp,
+      weather: description,
+      feelings
+    });
+  } catch (reason) {
+    console.log("error", reason);
+  }
 });
 
-app.get("/weather", returnJournalData);
+app.get("/getWeather", returnJournalData);
 
 function getWeatherURL(zip) {
   return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;
@@ -56,6 +65,7 @@ const callWeatherApi = async zip => {
   const response = await fetch(url);
   try {
     const newData = await response.json();
+    console.log("Result of API: ", newData);
     return newData;
   } catch (error) {
     console.log("error:", error);
