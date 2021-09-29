@@ -33,14 +33,8 @@ app.post("/weather", async function(req, res) {
   projectData.feelings = feelings;
   try {
     const result = await callWeatherApi(zip);
-    // console.log("Result in final function: ", result);
     const { weather, main, name } = result;
     const { description } = weather[0];
-    console.log({
-      name,
-      temperature: main.temp,
-      weather: description
-    });
 
     res.send({
       name,
