@@ -1,9 +1,10 @@
 {
   "name": "weather-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Weather App",
+  "private": true,
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,11 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.55.1",
+    "webpack-cli": "^4.8.0"
   }
 }
