@@ -1,7 +1,7 @@
 [build]
-    command = "npm run build"
+    command = "# no build command"
     functions = "netlify/functions"
-    publish = "dist/main.js"
+    publish = "/"
 
 [dev]
   command = "npm start" # Command to start your dev server
