@@ -23,6 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
+    "netlify-lambda": "^2.0.14",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

@@ -28,6 +28,7 @@
           cols="50"
         ></textarea>
         <button id="generate" type="submit">Generate</button>
+        <button id="testing">Testing</button>
       </div>
       <div class="holder entry">
         <div class="title">Most Recent Entry</div>
@@ -39,5 +40,13 @@
       </div>
     </div>
     <script src="app.js" type="text/javascript"></script>
+    <script>
+      const testBtn = document.querySelector('#testing');
+      testBtn.addEventListener('click', async () => {
+        const response = await fetch('/.netlify/functions/hello.js')
+        .then(res => res.json())
+        response.innerText = res;
+      })
+    </script>
   </body>
 </html>
