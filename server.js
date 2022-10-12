@@ -26,51 +26,51 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static("website"));
 
-app.post("/weather", async function(req, res) {
-  let zip = req.body.zip;
-  let feelings = req.body.feelings;
-  projectData.zip = zip;
-  projectData.feelings = feelings;
-  try {
-    const result = await callWeatherApi(zip);
-    const { weather, main, name } = result;
-    const { description } = weather[0];
+app.post("https://udacity-weather-application.netlify.app/weather", async function(req, res) {
+    let zip = req.body.zip;
+    let feelings = req.body.feelings;
+    projectData.zip = zip;
+    projectData.feelings = feelings;
+    try {
+        const result = await callWeatherApi(zip);
+        const { weather, main, name } = result;
+        const { description } = weather[0];
 
-    res.send({
-      name,
-      temperature: main.temp,
-      weather: description,
-      feelings
-    });
-  } catch (reason) {
-    console.log("error", reason);
-  }
+        res.send({
+            name,
+            temperature: main.temp,
+            weather: description,
+            feelings
+        });
+    } catch (reason) {
+        console.log("error", reason);
+    }
 });
 
 app.get("/getWeather", returnJournalData);
 
 function getWeatherURL(zip) {
-  return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;
+    return `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apiKey}`;
 }
 
 const callWeatherApi = async zip => {
-  const url = getWeatherURL(zip);
+    const url = getWeatherURL(zip);
 
-  const response = await fetch(url);
-  try {
-    const newData = await response.json();
-    console.log("Result of API: ", newData);
-    return newData;
-  } catch (error) {
-    console.log("error:", error);
-  }
+    const response = await fetch(url);
+    try {
+        const newData = await response.json();
+        console.log("Result of API: ", newData);
+        return newData;
+    } catch (error) {
+        console.log("error:", error);
+    }
 };
 
 function returnJournalData(req, res) {
-  res.send(projectData);
+    res.send(projectData);
 }
 
 const port = 8000;
 const server = app.listen(port, () => {
-  console.log(`running on localhost: ${port}`);
+    console.log(`running on localhost: ${port}`);
 });
