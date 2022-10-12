@@ -1,8 +1,4 @@
-/* Global Variables */
-
-/* Function to GET Web API Data*/
-
-/* Function to POST data */
+const environmentURL = window.location.origin;
 
 const ajax = async(url = "", method = "GET", data) => {
     const config = {
@@ -16,7 +12,7 @@ const ajax = async(url = "", method = "GET", data) => {
         config.body = JSON.stringify(data);
     }
     try {
-        const response = await fetch("/weather", config);
+        const response = await fetch(`${environmentURL}/weather`, config);
         const newData = await response.json();
         console.log("Data coming from server:", newData);
         return newData;
