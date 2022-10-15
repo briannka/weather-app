@@ -1,4 +1,8 @@
-const environmentURL = window.location.origin;
+const weatherEndpoint = "/.netlify/functions/weather";
+
+let d = new Date();
+let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+
 
 const ajax = async(url = "", method = "GET", data) => {
     const config = {
@@ -12,24 +16,24 @@ const ajax = async(url = "", method = "GET", data) => {
         config.body = JSON.stringify(data);
     }
     try {
-        const response = await fetch(`${environmentURL}/weather`, config);
-        const newData = await response.json();
-        console.log("Data coming from server:", newData);
+        const weatherResponse = await fetch(weatherEndpoint, config);
+        console.log(weatherResponse)
+        const weatherData = await weatherResponse.json();
+        console.log("Data coming from server:", weatherData);
         return newData;
     } catch (error) {
         console.log("error:", error);
     }
 };
 
-function updateUI(data) {
-    console.log(data);
+function updateUI(weatherData) {
     document.getElementById("date").innerText = `Today's date is ${newDate}`;
     document.getElementById(
         "temp"
-    ).innerText = `Temperature for zip code is ${data.temperature} fahrenheit`;
+    ).innerText = `Temperature for zip code is ${weatherData.temperature} fahrenheit`;
     document.getElementById(
         "content"
-    ).innerText = `The user's feeling: ${data.feelings}`;
+    ).innerText = `The user's feeling: ${weatherData.feelings}`;
 }
 
 /* Function called by event listener */
@@ -45,12 +49,10 @@ async function submission() {
     const zipValue = zipInput.value;
     const feelingsValue = feelingsInput.value;
 
-    const result = await ajax(`/weather`, "POST", {
+    console.log('zip', zipValue)
+    const dataFromBackend = await ajax(weatherEndpoint, "POST", {
         zip: zipValue,
         feelings: feelingsValue
     });
-    updateUI(result);
+    updateUI(dataFromBackend);
 }
-
-let d = new Date();
-let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
