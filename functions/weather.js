@@ -7,7 +7,7 @@ exports.handler = async(event, context) => {
     console.log(JSON.parse(event.body));
     const { zip, feelings } = JSON.parse(event.body);
 
-    const weatherURL = `${API_ENDPOINT}?zip=${zip},us&appid=${WEATHER_API_KEY}`
+    const weatherURL = `${API_ENDPOINT}?zip=${zip},us&appid=${WEATHER_API_KEY}&units=imperial`
     const fetchWeatherApi = fetch(weatherURL, { headers: { Accept: "application/json" } });
     return fetchWeatherApi
         .then((response) => response.json())

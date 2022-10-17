@@ -2,15 +2,17 @@ const weatherEndpoint = "/.netlify/functions/weather";
 
 const generateButton = document.getElementById("generate");
 const resultsPanel = document.getElementById("results_panel");
+const refreshButton = document.getElementById("refresh_button");
 const zipInput = document.getElementById("zip");
 const feelingsInput = document.getElementById("feelings");
 
 let d = new Date();
 let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 
-document.addEventListener('DOMContentLoaded', function() {
-    generateButton.style.display = 'block';
-    resultsPanel.style.display = 'none';
+document.addEventListener("DOMContentLoaded", function() {
+    generateButton.style.display = "block";
+    resultsPanel.style.display = "none";
+    refreshButton.style.display = "none";
 }, false);
 
 
@@ -55,11 +57,18 @@ const fetchBackend = async(url = "", method = "GET", data) => {
     }
 };
 
+// function to refresh the page
+
+const refreshPage = () => {
+    return window.location.reload(true)
+}
+
 // function to show results panel on UI
 
 const toggleResultPanelDisplay = () => {
-    generateButton.style.display = 'none';
-    resultsPanel.style.display = 'block';
+    generateButton.style.display = "none";
+    resultsPanel.style.display = "block";
+    refreshButton.style.display = "block";
 }
 
 
@@ -68,8 +77,12 @@ function updateUI(weatherData) {
     document.getElementById("date").innerText = `Today's date is ${newDate}`;
     document.getElementById(
         "temp"
-    ).innerText = `Temperature for zip code: ${weatherData.zip} is ${weatherData.main.temp} fahrenheit`;
+    ).innerText = `Temperature for zip code: ${weatherData.zip} is ${weatherData.main.temp} °F`;
     document.getElementById(
         "content"
     ).innerText = `The user's feeling: ${weatherData.feelings}`;
 }
+
+// Event listener for refresh button
+
+refreshButton.addEventListener("click", refreshPage)
