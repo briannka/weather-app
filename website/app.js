@@ -17,10 +17,9 @@ const ajax = async(url = "", method = "GET", data) => {
     }
     try {
         const weatherResponse = await fetch(weatherEndpoint, config);
-        console.log(weatherResponse)
         const weatherData = await weatherResponse.json();
         console.log("Data coming from server:", weatherData);
-        return newData;
+        return weatherData;
     } catch (error) {
         console.log("error:", error);
     }
@@ -30,7 +29,7 @@ function updateUI(weatherData) {
     document.getElementById("date").innerText = `Today's date is ${newDate}`;
     document.getElementById(
         "temp"
-    ).innerText = `Temperature for zip code is ${weatherData.temperature} fahrenheit`;
+    ).innerText = `Temperature for zip code: ${weatherData.zip} is ${weatherData.main.temp} fahrenheit`;
     document.getElementById(
         "content"
     ).innerText = `The user's feeling: ${weatherData.feelings}`;
