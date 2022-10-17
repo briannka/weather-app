@@ -1,26 +1,29 @@
 {
-  "name": "weather-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/briannka/weather-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/briannka/weather-app/issues"
-  },
-  "homepage": "https://github.com/briannka/weather-app#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "node-fetch": "^2.6.0"
-  }
+    "name": "weather-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./website/app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/briannka/weather-app.git"
+    },
+    "keywords": [],
+    "author": "Brianna Iliev",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/briannka/weather-app/issues"
+    },
+    "homepage": "https://github.com/briannka/weather-app#readme",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "netlify-cli": "^12.0.9",
+        "node-fetch": "^2.6.0"
+    }
 }

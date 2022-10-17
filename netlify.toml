@@ -1,0 +1,9 @@
+[build]
+    command = "npm run build"
+    publish = "website"
+    functions = "functions"
+
+[[redirects]]
+from = "/weather/*"
+to = "http://api.openweathermap.org/data/2.5/weather?zip=:splat"
+status = 200

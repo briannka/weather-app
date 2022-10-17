@@ -1,8 +1,8 @@
-/* Global Variables */
+const weatherEndpoint = "/.netlify/functions/weather";
 
-/* Function to GET Web API Data*/
+let d = new Date();
+let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 
-/* Function to POST data */
 
 const ajax = async(url = "", method = "GET", data) => {
     const config = {
@@ -16,24 +16,23 @@ const ajax = async(url = "", method = "GET", data) => {
         config.body = JSON.stringify(data);
     }
     try {
-        const response = await fetch("/weather", config);
-        const newData = await response.json();
-        console.log("Data coming from server:", newData);
-        return newData;
+        const weatherResponse = await fetch(weatherEndpoint, config);
+        const weatherData = await weatherResponse.json();
+        console.log("Data coming from server:", weatherData);
+        return weatherData;
     } catch (error) {
         console.log("error:", error);
     }
 };
 
-function updateUI(data) {
-    console.log(data);
+function updateUI(weatherData) {
     document.getElementById("date").innerText = `Today's date is ${newDate}`;
     document.getElementById(
         "temp"
-    ).innerText = `Temperature for zip code is ${data.temperature} fahrenheit`;
+    ).innerText = `Temperature for zip code: ${weatherData.zip} is ${weatherData.main.temp} fahrenheit`;
     document.getElementById(
         "content"
-    ).innerText = `The user's feeling: ${data.feelings}`;
+    ).innerText = `The user's feeling: ${weatherData.feelings}`;
 }
 
 /* Function called by event listener */
@@ -49,12 +48,10 @@ async function submission() {
     const zipValue = zipInput.value;
     const feelingsValue = feelingsInput.value;
 
-    const result = await ajax(`/weather`, "POST", {
+    console.log('zip', zipValue)
+    const dataFromBackend = await ajax(weatherEndpoint, "POST", {
         zip: zipValue,
         feelings: feelingsValue
     });
-    updateUI(result);
+    updateUI(dataFromBackend);
 }
-
-let d = new Date();
-let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
