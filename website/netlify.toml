@@ -1,9 +1,0 @@
-[build]
-    command = "echo 'Building'"
-    publish = "website"
-    functions = "../functions"
-
-[[redirects]]
-from = "/weather/*"
-to = "http://api.openweathermap.org/data/2.5/weather?zip=:splat"
-status = 200
