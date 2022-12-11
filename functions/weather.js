@@ -4,7 +4,6 @@ const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const API_ENDPOINT = "http://api.openweathermap.org/data/2.5/weather";
 
 exports.handler = async(event, context) => {
-    console.log(JSON.parse(event.body));
     const { zip, feelings } = JSON.parse(event.body);
 
     const weatherURL = `${API_ENDPOINT}?zip=${zip},us&appid=${WEATHER_API_KEY}&units=imperial`
